@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "177535919574",
+    "firebase_url": "https://myrecipes-78cad.firebaseio.com",
+    "project_id": "myrecipes-78cad",
+    "storage_bucket": "myrecipes-78cad.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:177535919574:android:43794ebdb4219d74",
+        "android_client_info": {
+          "package_name": "com.myrecipes.davidsebestyen.myrecipes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "177535919574-scuecfmu88iqufr0da1k6f4c07rbq0d9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBovWOV_xNM852At0EmkiHkP6er_YNHGaI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
