@@ -1,13 +1,12 @@
 package com.myrecipes.davidsebestyen.myrecipes.signin
 
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
-import org.junit.Assert.*
 import org.mockito.Mock
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
+import java.lang.Exception
 
 class SignInPresenterTest {
 
@@ -16,17 +15,35 @@ class SignInPresenterTest {
     @Mock
     lateinit var mView: SignInContract.MvPView
 
+    @Mock
+    lateinit var mSignInApi: SignInContract.SignInApi
+
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        mPresenter = SignInPresenter(mView)
+        mPresenter = SignInPresenter(mView, mSignInApi)
     }
 
 
    @Test
    fun logInGoogle(){
-       mPresenter.signInGoogle()
+       mPresenter.signInGoogleIni()
 
        verify(mView).signInGoogleClicked(null)
    }
+
+    @Test
+    fun onFinishedTest(){
+        mPresenter.onFinished()
+
+        verify(mView).startMainActivityIntent()
+    }
+
+    @Test
+    fun onErrorTest(){
+        val e = Exception()
+        mPresenter.onFailure(e)
+
+        mView.showSignInErrorMessage(e)
+    }
 }

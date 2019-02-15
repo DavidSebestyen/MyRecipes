@@ -7,12 +7,12 @@ import android.os.Bundle
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.myrecipes.davidsebestyen.myrecipes.R
+import com.myrecipes.davidsebestyen.myrecipes.base.BaseActivity
 import com.myrecipes.davidsebestyen.myrecipes.databinding.ActivityMainBinding
 import com.myrecipes.davidsebestyen.myrecipes.signin.SignInActivity
 
-class MainActivity : AppCompatActivity(), MainContract.MvPView {
+class MainActivity : BaseActivity(), MainContract.MvPView {
 
-    lateinit var mFirebaseAuth: FirebaseAuth
     lateinit var mFirebaseUser: FirebaseUser
 
     override fun onCreate(savedInstanceState: Bundle?) {

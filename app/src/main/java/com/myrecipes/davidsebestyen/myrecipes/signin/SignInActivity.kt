@@ -17,40 +17,30 @@ import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.myrecipes.davidsebestyen.myrecipes.R
+import com.myrecipes.davidsebestyen.myrecipes.base.BaseActivity
 import com.myrecipes.davidsebestyen.myrecipes.databinding.ActivitySignInBinding
+import com.myrecipes.davidsebestyen.myrecipes.firebase.SignInApi
 import com.myrecipes.davidsebestyen.myrecipes.main.MainActivity
+import java.lang.Exception
 
 private const val RC_SIGN_IN = 9001
 
-class SignInActivity : AppCompatActivity(), SignInContract.MvPView, GoogleApiClient.OnConnectionFailedListener {
+class SignInActivity : BaseActivity(), SignInContract.MvPView, GoogleApiClient.OnConnectionFailedListener {
+    override fun showSignInErrorMessage(e: Exception) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
 
     private val TAG = "SignInActivity"
 
-
-
-    lateinit var mFirebaseAuth: FirebaseAuth
     lateinit var mPresenter: SignInPresenter
-
-    lateinit var mGoogleApiClient: GoogleApiClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = DataBindingUtil.setContentView<ActivitySignInBinding>(this, R.layout.activity_sign_in)
 
-        mPresenter = SignInPresenter(this)
-        mFirebaseAuth = FirebaseAuth.getInstance()
+        mPresenter = SignInPresenter(this, SignInApi())
         binding.presenter = mPresenter
-
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build()
-
-        mGoogleApiClient = GoogleApiClient.Builder(this)
-                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build()
 
     }
 
@@ -61,6 +51,13 @@ class SignInActivity : AppCompatActivity(), SignInContract.MvPView, GoogleApiCli
         startActivityForResult(intent, RC_SIGN_IN)
 
     }
+
+    override fun startMainActivityIntent() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
 
     override fun onConnectionFailed(p0: ConnectionResult) {
         Log.d(TAG, "onConnectionFailed:" + p0.errorMessage)
@@ -73,32 +70,12 @@ class SignInActivity : AppCompatActivity(), SignInContract.MvPView, GoogleApiCli
             val signInResult = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
             if(signInResult.isSuccess){
                 val account = signInResult.signInAccount
-                firebaseAuthWithGoogle(account!!);
+                mPresenter.signInGoogle(account!!)
             } else {
                 // Google Sign-In failed
                 Log.e(TAG, "Google Sign-In failed. " + signInResult.toString());
             }
             }
 
-    }
-
-    //FIrebase sign in method
-    private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
-        Log.d(TAG, "fireBaseAuthWithGoogle: " + acct.id)
-
-        val credential = GoogleAuthProvider.getCredential(acct.idToken, null) as AuthCredential
-        mFirebaseAuth.signInWithCredential(credential)
-                .addOnCompleteListener {
-                    Log.d(TAG, "signInCredentialOnComplete: " + it.isSuccessful)
-
-                    if (!it.isSuccessful) {
-                        Log.w(TAG, "signInWithCredential", it.getException())
-                        Toast.makeText(this, "Authentication failed", Toast.LENGTH_SHORT).show()
-                    } else {
-                        val intent = Intent(this, MainActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                    }
-                }
     }
 }
