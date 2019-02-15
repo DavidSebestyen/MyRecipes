@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "177535919574-0eu64b7vofm940l3c5vvovc0aucr1p09.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.myrecipes.davidsebestyen.myrecipes",
+            "certificate_hash": "c4be6259749ec640f0013e51e6c730028939dba1"
+          }
+        },
+        {
           "client_id": "177535919574-scuecfmu88iqufr0da1k6f4c07rbq0d9.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "177535919574-scuecfmu88iqufr0da1k6f4c07rbq0d9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
