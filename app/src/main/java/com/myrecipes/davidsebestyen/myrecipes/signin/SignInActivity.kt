@@ -26,10 +26,13 @@ import java.lang.Exception
 private const val RC_SIGN_IN = 9001
 
 class SignInActivity : BaseActivity(), SignInContract.MvPView, GoogleApiClient.OnConnectionFailedListener {
-    override fun showSignInErrorMessage(e: Exception) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
+    companion object {
+        fun startSignInActivity(activity: BaseActivity){
+            activity.startActivity(Intent(activity, SignInActivity::class.java))
+            activity.finish()
+        }
+    }
 
     private val TAG = "SignInActivity"
 
@@ -78,4 +81,10 @@ class SignInActivity : BaseActivity(), SignInContract.MvPView, GoogleApiClient.O
             }
 
     }
+
+    override fun showSignInErrorMessage(e: Exception) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+
 }
