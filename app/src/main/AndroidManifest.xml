@@ -17,7 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".signin.SignInActivity"/>
-        <activity android:name=".base.BaseActivity"/>
+        <activity android:name=".addrecipe.AddRecipeActivity"/>
     </application>
 
 </manifest>

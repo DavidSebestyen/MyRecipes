@@ -21,7 +21,7 @@ class SignInPresenterTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        mPresenter = SignInPresenter(mView, mSignInApi)
+        mPresenter = SignInPresenter(mSignInApi)
     }
 
 

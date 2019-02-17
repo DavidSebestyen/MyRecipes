@@ -1,5 +1,6 @@
 package com.myrecipes.davidsebestyen.myrecipes.main
 
+import com.myrecipes.davidsebestyen.myrecipes.base.BaseContract
 import org.junit.Before
 import org.junit.Test
 
@@ -12,26 +13,33 @@ class MainActivityPresenterTest {
 
     lateinit var mPresenter: MainActivityPresenter
 
-    @Mock
     lateinit var mView: MainContract.MvPView
+
 
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
+        mPresenter = MainActivityPresenter()
 
-        mPresenter = MainActivityPresenter(mView)
+        mView = mPresenter.getView()!!
     }
 
     @Test
     fun initUser() {
         mPresenter.initUser()
 
-        verify(mView).showWelcomeUser()
+        verify(mView)?.showWelcomeUser()
     }
 
     @Test
     fun signOut(){
         mPresenter.signOut()
-        verify(mView).signOut()
+        verify(mView)?.signOut()
+    }
+
+    @Test
+    fun addRecipeClicked(){
+        mPresenter.addRecipeClick()
+
+        verify(mView)?.startAddRecipeActivity(null)
     }
 }

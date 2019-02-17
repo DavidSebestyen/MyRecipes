@@ -8,36 +8,40 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.myrecipes.davidsebestyen.myrecipes.R
+import com.myrecipes.davidsebestyen.myrecipes.addrecipe.AddRecipeActivity
 import com.myrecipes.davidsebestyen.myrecipes.base.BaseActivity
 import com.myrecipes.davidsebestyen.myrecipes.databinding.ActivityMainBinding
 import com.myrecipes.davidsebestyen.myrecipes.model.User
 import com.myrecipes.davidsebestyen.myrecipes.signin.SignInActivity
 
-class MainActivity : BaseActivity(), MainContract.MvPView {
+class MainActivity : BaseActivity<MainContract.MvPView, MainContract.Presenter>(), MainContract.MvPView {
+
+    override fun createPresenter(): MainContract.Presenter {
+        return MainActivityPresenter()
+    }
 
     lateinit var mFirebaseUser: FirebaseUser
-    lateinit var mPresenter: MainActivityPresenter
 
     lateinit var mUser: User
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+        binding.presenter = presenter
 
-        mPresenter = MainActivityPresenter(this)
         mFirebaseAuth = FirebaseAuth.getInstance()
-        if(mFirebaseAuth.currentUser is FirebaseUser) {
+        if(mFirebaseAuth.currentUser != null) {
             mFirebaseUser = mFirebaseAuth.currentUser!!
             mUser = User(mFirebaseUser)
             Log.w("MainActivity", "UserDetails: " + mUser.toString() )
             showWelcomeUser()
         } else {
-            startActivity(Intent(this, SignInActivity::class.java))
-            finish()
+            SignInActivity.startSignInActivity(this)
             return
         }
 
@@ -56,12 +60,17 @@ class MainActivity : BaseActivity(), MainContract.MvPView {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item?.itemId) {
             R.id.sing_out -> {
-                mPresenter.signOut()
+                presenter.signOut()
                 return true
             }
         }
         return super.onOptionsItemSelected(item)
     }
+
+    override fun startAddRecipeActivity(view: View?) {
+        startActivityForResult(Intent(this, AddRecipeActivity::class.java), 1993)
+    }
+
 
     override fun signOut() {
         mFirebaseAuth.signOut()

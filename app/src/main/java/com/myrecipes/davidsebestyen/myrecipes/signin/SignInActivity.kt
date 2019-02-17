@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.myrecipes.davidsebestyen.myrecipes.R
 import com.myrecipes.davidsebestyen.myrecipes.base.BaseActivity
+import com.myrecipes.davidsebestyen.myrecipes.base.BaseContract
 import com.myrecipes.davidsebestyen.myrecipes.databinding.ActivitySignInBinding
 import com.myrecipes.davidsebestyen.myrecipes.firebase.SignInApi
 import com.myrecipes.davidsebestyen.myrecipes.main.MainActivity
@@ -25,10 +26,13 @@ import java.lang.Exception
 
 private const val RC_SIGN_IN = 9001
 
-class SignInActivity : BaseActivity(), SignInContract.MvPView, GoogleApiClient.OnConnectionFailedListener {
+class SignInActivity: BaseActivity<SignInContract.MvPView, SignInContract.Presenter>(), SignInContract.MvPView, GoogleApiClient.OnConnectionFailedListener {
+    override fun createPresenter(): SignInContract.Presenter {
+        return SignInPresenter(SignInApi())
+    }
 
     companion object {
-        fun startSignInActivity(activity: BaseActivity){
+        fun startSignInActivity(activity: MainActivity){
             activity.startActivity(Intent(activity, SignInActivity::class.java))
             activity.finish()
         }
@@ -36,14 +40,11 @@ class SignInActivity : BaseActivity(), SignInContract.MvPView, GoogleApiClient.O
 
     private val TAG = "SignInActivity"
 
-    lateinit var mPresenter: SignInPresenter
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = DataBindingUtil.setContentView<ActivitySignInBinding>(this, R.layout.activity_sign_in)
 
-        mPresenter = SignInPresenter(this, SignInApi())
-        binding.presenter = mPresenter
+        binding.presenter = presenter
 
     }
 
@@ -73,7 +74,7 @@ class SignInActivity : BaseActivity(), SignInContract.MvPView, GoogleApiClient.O
             val signInResult = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
             if(signInResult.isSuccess){
                 val account = signInResult.signInAccount
-                mPresenter.signInGoogle(account!!)
+                presenter.signInGoogle(account!!)
             } else {
                 // Google Sign-In failed
                 Log.e(TAG, "Google Sign-In failed. " + signInResult.toString());

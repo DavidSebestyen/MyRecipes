@@ -1,12 +1,19 @@
 package com.myrecipes.davidsebestyen.myrecipes.main
 
-class MainActivityPresenter(val view: MainContract.MvPView) : MainContract.Presenter {
+import com.myrecipes.davidsebestyen.myrecipes.base.BasePresenter
+
+class MainActivityPresenter : BasePresenter<MainContract.MvPView>(), MainContract.Presenter {
+    override fun addRecipeClick() {
+        getView()?.startAddRecipeActivity(null)
+    }
+
+
     override fun signOut() {
-        view.signOut()
+        getView()?.signOut()
     }
 
     override fun initUser() {
-        view.showWelcomeUser()
+        getView()?.showWelcomeUser()
     }
 
 }
